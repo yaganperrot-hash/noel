@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Énigme 4 – L’Atelier Secret de Santa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Énigme 4 – L’Atelier Secret de Santa</h1>
+    <p>
+      Tu as accès à l’API des cadeaux.  
+      L’URL appelée ressemble à de>?id=42</code>. Essaie de modifier l’ID...
+    </p>
+
+    <p>
+      ID du cadeau à consulter :
+      <input id="idInput" type="number" value="42" min="0">
+      <button onclick="callApi()">Appeler l'API</button>
+    </p>
+
+    <textarea id="apiResult" readonly></textarea>
+
+    <p>
+      Quand tu seras "Santa" (rôle admin), un message spécial apparaîtra dans l’API.
+    </p>
+
+    <p>Entre le code final trouvé :</p>
+    <input id="codeInput" placeholder="Code final">
+    <button onclick="checkCode()">Valider</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // Faux "token" de rôle, stocké dans localStorage.
+    // Pour augmenter la difficulté, tu peux enlever cette initialisation
+    // et ne le mettre que via la console JS.
+    if (!localStorage.getItem('roleToken')) {
+      const roleObj = { user: "etudiant", role: "elf" };
+      localStorage.setItem('roleToken', btoa(JSON.stringify(roleObj)));
+      console.log("Token de rôle initialisé. Tu peux le voir dans localStorage.");
+      console.log("Indice: essaye de passer role à 'santa' dans ce token.");
+    }
+
+    function getRole() {
+      try {
+        const token = localStorage.getItem('roleToken');
+        const decoded = atob(token);
+        const obj = JSON.parse(decoded);
+        return obj.role || "elf";
+      } catch (e) {
+        return "elf";
+      }
+    }
+
+    function callApi() {
+      const id = Number(document.getElementById('idInput').value);
+      const role = getRole();
+      const out = document.getElementById('apiResult');
+
+      // Simulation côté client de "réponses API"
+      if (role !== "santa") {
+        if (id === 0) {
+          out.value = JSON.stringify({
+            error: "Accès restreint",
+            hint: "Seul 'santa' peut voir le cadeau spécial."
+          }, null, 2);
+        } else {
+          out.value = JSON.stringify({
+            id,
+            cadeau: "Cadeau standard",
+            info: "Ton rôle actuel est '" + role + "'."
+          }, null, 2);
+        }
+      } else {
+        // Rôle admin "santa"
+        if (id === 1337) {
+          // Code final caché
+          const hidden = "RE9VQ0UyMDI1"; // "DOUCE2025" en Base64
+          out.value = JSON.stringify({
+            id,
+            cadeau: "Cadeau ultra-secret",
+            secret: "Base64:" + hidden
+          }, null, 2);
+        } else {
+          out.value = JSON.stringify({
+            id,
+            cadeau: "Cadeau spécial Santa",
+            note: "Essaye l’ID 1337..."
+          }, null, 2);
+        }
+      }
+    }
+
+    function checkCode() {
+      const input = document.getElementById('codeInput').value.trim().toUpperCase();
+      const correct = "DOUCE2025";
+      const result = document.getElementById('result');
+
+      if (input === correct) {
+        result.textContent = "Incroyable ! Fragment 4 débloqué : FRAGMENT_4. Tu as tout fini !";
+      } else {
+        result.textContent = "Ce n'est pas le bon code. As-tu décodé le Base64 ?";
+      }
+    }
+  </script>
+</body>
+</html>

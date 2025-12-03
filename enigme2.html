@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Énigme 2 – Les Lumières du Sapin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Énigme 2 – Les Lumières du Sapin</h1>
+    <p>
+      Voici des logs du système de contrôle du sapin.  
+      Le code commence par de>LUTIN-</code> suivi de 4 caractères hexadécimaux.
+    </p>
+
+    <textarea readonly>
+[INFO] 2025-12-01 10:00:01 Lumières OK sur ligne 1
+[WARN] 2025-12-01 10:01:22 Clignotement suspect sur ligne 3
+[INFO] 2025-12-01 10:02:45 CODE:LUTIN-3F4A vérification automatique
+[ERROR] 2025-12-01 10:03:00 Court-circuit temporaire
+[INFO] 2025-12-01 10:04:12 Reboot du contrôleur
+[INFO] 2025-12-01 10:05:55 Test séquence R G B OK
+    </textarea>
+
+    <p>Entre le code trouvé (ex: LUTIN-3F4A) :</p>
+    <input id="codeInput" placeholder="LUTIN-XXXX">
+    <button onclick="checkCode()">Valider</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function checkCode() {
+      const input = document.getElementById('codeInput').value.trim().toUpperCase();
+      const correct = "LUTIN-3F4A";
+      const result = document.getElementById('result');
+
+      if (input === correct) {
+        result.textContent = "Bravo ! Fragment 2 débloqué : FRAGMENT_2";
+      } else {
+        result.textContent = "Code incorrect. Cherche dans les logs...";
+      }
+    }
+  </script>
+</body>
+</html>

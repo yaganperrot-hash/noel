@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Énigme 3 – Le Calendrier Codé</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+      justify-items: center;
+      margin-bottom: 1rem;
+    }
+    .day {
+      width: 60px;
+      height: 60px;
+      background: #223;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Énigme 3 – Le Calendrier Codé</h1>
+    <p>
+      Clique sur les cases du calendrier.  
+      Certains messages sont encodés dans un format très courant (indice : "base64 decode").
+    </p>
+
+    <div class="grid" id="grid"></div>
+
+    <p>Contenu de la case sélectionnée :</p>
+    <textarea id="message" readonly></textarea>
+
+    <p>Quand tu auras décodé tous les fragments, entre le mot final :</p>
+    <input id="codeInput" placeholder="Mot final">
+    <button onclick="checkCode()">Valider</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // 24 cases, quelques-unes contiennent des fragments Base64 de "FLOCON"
+    const casesData = {
+      3: "RkxP",   // FLO
+      7: "Q09O",   // CON
+      12: "Juste un message normal",
+      18: "Indice : Cherche 'base64 decode' sur le web",
+      21: "R29vZCBsdWNrIQ=="  // "Good luck!"
+    };
+
+    const grid = document.getElementById('grid');
+    const message = document.getElementById('message');
+
+    for (let i = 1; i <= 24; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'day';
+      btn.textContent = i;
+      btn.onclick = () => {
+        const content = casesData[i] || "Rien de spécial ici...";
+        message.value = content;
+      };
+      grid.appendChild(btn);
+    }
+
+    function checkCode() {
+      const input = document.getElementById('codeInput').value.trim().toUpperCase();
+      const correct = "FLOCON";
+      const result = document.getElementById('result');
+
+      if (input === correct) {
+        result.textContent = "Bravo ! Fragment 3 débloqué : FRAGMENT_3";
+      } else {
+        result.textContent = "Non. Pense à décoder les messages encodés.";
+      }
+    }
+  </script>
+</body>
+</html>
