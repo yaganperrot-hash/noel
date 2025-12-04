@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scène de Noël</title>
+    <style>
+        /* --- 1. Le Fond d'écran --- */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Toute la hauteur */
+            width: 100vw;  /* Toute la largeur */
+            overflow: hidden; /* Pas de barres de défilement */
+            background-image: url('fondecran.png'); 
+            background-size: cover; /* Couvre tout l'écran */
+            background-position: center center;
+            background-repeat: no-repeat;
+            position: relative; /* Référence pour les images absolute */
+        }
+        /* --- 2. Style des images (PLAT, sans effet bouton) --- */
+        .deco {
+            position: absolute; /* Permet le placement libre */
+            height: auto;       /* Garde les proportions */
+            border: none;       /* Sécurité : enlève toute bordure */
+            outline: none;      /* Sécurité : enlève tout contour */
+            display: block;     /* Évite les petits espaces sous les images */
+        }
+        /* --- 3. Les Positions et Tailles --- */
+        /* Sapin : Milieu Gauche */
+        .pos-sapin {
+            top: 50%;
+            left: 25%;
+            width: 180px; /* Ajustez la taille ici si besoin */
+            transform: translateY(-50%); 
+        }
+        /* Canapé : Milieu Droit */
+        .pos-canape {
+            top: 84%;
+            right: 15%;
+            width: 370px; 
+            transform: translateY(-50%);
+        }
+        /* Lutin : Bas Gauche */
+        .pos-lutin {
+            bottom: 2%;
+            left: 2%;
+            width: 120px;
+        }
+        /* Papa Noël : Bas Droite */
+        .pos-papa {
+            bottom: 47%;
+            right: 7%;
+            width: 180px;
+        }
+        /* Rennes : Haut Droite */
+        .pos-rennes {
+            top: 7%;
+            right: 20%;
+            width: 150px;
+        }
+        /* Cadeau : Haut Droite */
+        .pos-cadeau {
+            top: 74%;
+            left: 20%;
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="sapinmodif.png" alt="Sapin" class="deco pos-sapin">
+    <img src="canapenoel.png" alt="Canapé" class="deco pos-canape">
+    <img src="lutinnoel.png" alt="Lutin" class="deco pos-lutin">
+    <img src="papanoel.png" alt="Papa Noël" class="deco pos-papa">
+    <img src="rennesnoel.png" alt="Rennes" class="deco pos-rennes">
+    <img src="cadeaunoel.png" alt="Rennes" class="deco pos-cadeau">
+</body>
+</html>
