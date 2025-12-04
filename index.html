@@ -1,21 +1,75 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Défis de Noël</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyeux Noël</title>
+    <style>
+        /* 1. FOND D'ÉCRAN */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-image: url('fondecran.png'); 
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* 2. STYLE DES IMAGES (PLAT) */
+        .deco {
+            position: absolute;
+            height: auto;
+            border: none;
+            outline: none;
+            display: block;
+            pointer-events: none; /* Rend l'image intouchable (pas de clic possible) */
+        }
+
+        /* 3. POSITIONS */
+        .pos-sapin {
+            top: 50%;
+            left: 5%;
+            width: 250px;
+            transform: translateY(-50%); 
+        }
+
+        .pos-canape {
+            top: 50%;
+            right: 5%;
+            width: 300px;
+            transform: translateY(-50%);
+        }
+
+        .pos-lutin {
+            bottom: 2%;
+            left: 2%;
+            width: 120px;
+        }
+
+        .pos-papa {
+            bottom: 2%;
+            right: 2%;
+            width: 180px;
+        }
+
+        .pos-rennes {
+            top: 2%;
+            right: 2%;
+            width: 150px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Défis de Noël</h1>
-  <p>Bienvenue sur le mini-escape game de Noël.</p>
 
-  <ul>
-    <li><a href="enigme1.html">Énigme 1 – Le Sapin Mystérieux (facile)</a></li>
-    <li><a href="enigme2.html">Énigme 2 – Les Lumières du Sapin (moyen)</a></li>
-    <li><a href="enigme3.html">Énigme 3 – Le Calendrier Codé (dur)</a></li>
-    <li><a href="enigme4.html">Énigme 4 – L’Atelier Secret (très dur)</a></li>
-  </ul>
+    <img src="sapinmodified.png" alt="Sapin" class="deco pos-sapin">
+    <img src="canapenoel.png" alt="Canapé" class="deco pos-canape">
+    <img src="lutinnoel.png" alt="Lutin" class="deco pos-lutin">
+    <img src="papanoel.png" alt="Papa Noël" class="deco pos-papa">
+    <img src="rennesnoel.png" alt="Rennes" class="deco pos-rennes">
 
-  <p>Chaque énigme te donne un morceau de l’image finale.</p>
 </body>
 </html>
