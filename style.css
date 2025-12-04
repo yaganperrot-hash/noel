@@ -1,0 +1,31 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #0b1020;
+  color: #f5f5f5;
+  text-align: center;
+  margin: 0;
+  padding: 2rem;
+}
+
+a {
+  color: #ffd966;
+}
+
+input, button, textarea {
+  font-size: 1rem;
+  margin: 0.5rem;
+}
+
+textarea {
+  width: 90%;
+  height: 200px;
+}
+
+.card {
+  max-width: 700px;
+  margin: 1rem auto;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  background: #151b30;
+  box-shadow: 0 0 10px #0008;
+}

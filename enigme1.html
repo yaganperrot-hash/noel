@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Énigme 1 – Le Sapin Mystérieux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Énigme 1 – Le Sapin Mystérieux</h1>
+    <p>Un code secret est caché dans cette page (HTML, CSS, console, attributs...).</p>
+    <p>Entre le code complet (sans espace) pour valider.</p>
+
+    <input id="codeInput" placeholder="Ex: JOYEUXNOEL">
+    <button onclick="checkCode()">Valider</button>
+    <p id="result"></p>
+  </div>
+
+  <!-- Indice 1: JOY -->
+  <style>
+    /* Indice 2: EUX */
+    .secret-EUX { display: none; /* Indice 2: EUX */ }
+
+  </style>
+
+  <img src="sapin.png" alt="Sapin de Noël" data-hint="NOEL">
+
+  <script>
+    // Indice 3: Hint dans la console
+    console.log("Indice 3: Regardez aussi les attributs data-*...");
+
+    function checkCode() {
+      const input = document.getElementById('codeInput').value.trim().toUpperCase();
+      const correct = "JOYEUXNOEL"; // JOY + EUX + NOEL (data-hint)
+      const result = document.getElementById('result');
+
+      if (input === correct) {
+        result.textContent = "Bravo ! Fragment 1 débloqué : FRAGMENT_1";
+      } else {
+        result.textContent = "Non, ce n'est pas le bon code.";
+      }
+    }
+  </script>
+</body>
+</html>
