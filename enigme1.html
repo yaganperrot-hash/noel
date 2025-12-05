@@ -3,42 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <title>Énigme 1 – Le Sapin Mystérieux</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="card">
-    <h1>Énigme 1 – Le Sapin Mystérieux</h1>
-    <p>Un code secret est caché dans cette page (HTML, CSS, console, attributs...).</p>
-    <p>Entre le code complet (sans espace) pour valider.</p>
-
-    <input id="codeInput" placeholder="Ex: JOYEUXNOEL">
-    <button onclick="checkCode()">Valider</button>
-    <p id="result"></p>
-  </div>
-
-  <!-- Indice 1: JOY -->
   <style>
+    /* AJOUT : GESTION DU FOND D'ECRAN */
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        /* Image de fond présente dans vos fichiers */
+        background-image: url('fondecran.png'); 
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        font-family: sans-serif;
+        
+        /* Centrage de la carte */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Style de la carte blanche */
+    .card {
+        background: rgba(255, 255, 255, 0.95); /* Blanc légèrement transparent */
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        max-width: 500px;
+        text-align: center;
+    }
+
+    input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 70%; }
+    button { padding: 10px 20px; background: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 23px;}
+    button:hover { background: #b71c1c; }
+
     /* Indice 2: EUX */
     .secret-EUX { display: none; /* Indice 2: EUX */ }
-
   </style>
+</head>
+<body>
+    <div id="step-puzzle">
+        <input id="codeInput" placeholder="Ex: CODE_SECRET">
+        <br><br>
+        <button onclick="checkCode()">Valider</button>
+        <p id="result-msg" style="font-weight:bold;"></p>
+    </div>
 
-  <img src="sapin.png" alt="Sapin de Noël" data-hint="NOEL">
+    <div id="step-auth" style="display:none; margin-top:20px; border-top:1px solid #ccc; padding-top:15px;">
+        <p style="color:green;">Code valide !</p>
+        <p>Entrez votre email étudiant pour valider votre victoire :</p>
+        
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+        
+        <form action="https://docs.google.com/forms/d/e/1FAIpQLScLkeozfaHugoF57Y5C3bo_vjTFB_YnI6MdBb2bd-ffulfAdg/formResponse" 
+              method="post" 
+              
+              onsubmit="finalSuccess()">
+            
+            <input type="text" name="entry.1719582037" placeholder="prenom.nom@ecole.com" required>
+            
+            <input type="hidden" name="entry.1505677994" id="hiddenCodeInput">
+            
+            <br><br>
+            <button type="submit" style="background-color: #2e7d32;">Enregistrer</button>
+        </form>
+    </div>
 
+    <div id="final-msg" style="display:none; margin-top:20px;">
+        <h3 style="color: #d32f2f;">Félicitations !</h3>
+        <p>Victoire enregistrée.</p>
+        <div style="background:#eee; padding:10px; border:2px dashed #333; display:inline-block;">
+            Fragment 1 : <strong>FRAGMENT_1</strong>
+        </div>
+    </div>
+  </div>
   <script>
     // Indice 3: Hint dans la console
     console.log("Indice 3: Regardez aussi les attributs data-*...");
 
     function checkCode() {
       const input = document.getElementById('codeInput').value.trim().toUpperCase();
-      const correct = "JOYEUXNOEL"; // JOY + EUX + NOEL (data-hint)
-      const result = document.getElementById('result');
+      const correct = "JOYEUXNOEL"; // JOY + EUX + NOEL
+      const msg = document.getElementById('result-msg');
 
       if (input === correct) {
-        result.textContent = "Bravo ! Fragment 1 débloqué : FRAGMENT_1";
+        msg.textContent = "";
+        
+        // Bloquer l'input
+        document.getElementById('codeInput').disabled = true;
+        
+        // Préparer le formulaire caché
+        document.getElementById('hiddenCodeInput').value = input;
+        
+        // Afficher l'étape d'auth
+        document.getElementById('step-puzzle').style.display = "none";
+        document.getElementById('step-auth').style.display = "block";
       } else {
-        result.textContent = "Non, ce n'est pas le bon code.";
+        msg.textContent = "Ce n'est pas le bon code.";
+        msg.style.color = "red";
       }
+    }
+
+    function finalSuccess() {
+      // Transition vers le message final après clic sur "Enregistrer"
+      setTimeout(() => {
+          document.getElementById('step-auth').style.display = 'none';
+          document.getElementById('final-msg').style.display = 'block';
+      }, 500);
     }
   </script>
 </body>
