@@ -21,61 +21,97 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+    .day:hover {
+      background: #334;
+    }
+    textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Énigme 3 – Le Calendrier Codé</h1>
-    <p>
-      Clique sur les cases du calendrier.  
-      Certains messages sont encodés dans un format très courant (indice : "base64 decode").
-    </p>
+    <p>Clique sur les cases du calendrier.</p>
 
     <div class="grid" id="grid"></div>
 
-    <p>Contenu de la case sélectionnée :</p>
-    <textarea id="message" readonly></textarea>
+    <textarea id="message" rows="3" readonly></textarea>
 
-    <p>Quand tu auras décodé tous les fragments, entre le mot final :</p>
     <input id="codeInput" placeholder="Mot final">
     <button onclick="checkCode()">Valider</button>
     <p id="result"></p>
   </div>
 
   <script>
-    // 24 cases, quelques-unes contiennent des fragments Base64 de "FLOCON"
-    const casesData = {
-      3: "RkxP",   // FLO
-      7: "Q09O",   // CON
-      12: "Juste un message normal",
-      18: "Indice : Cherche 'base64 decode' sur le web",
-      21: "R29vZCBsdWNrIQ=="  // "Good luck!"
-    };
+    // 1. Données cryptées (placées ICI dans le script, et non dans le HTML)
+    const encryptedStore = "M2tnZ2gQZHVhLxMRE2NXd1xbKh4DIh1bcnZWI3FrZ34QAhAOah85MCESUURRMmkwJDtGEERbO2kyhvtRXFNGKT0/IyESDxAYanp0f3BQd2dTLAEcMzNqfkICD3g6DBZdV1BdLCUzAj5IVHVhLyoRAygQHBAAanN0CTdBEFFGi+A4IDNHSBJHJyciZSDxmUFROj+V7CESDxAYantmZ2gQcl1aJiwlZSRTU1NaKywlZHAeEgAFanN0ED9kXmtsAiIMHT1VaV9YJCs/ByFoY3BHKREMKRt6cksCG3gscwUDQFBZDjk1KAdVEh4Went0f3B8F11BKiU/ICgSQFNHaD85NnJRX19ZIT12ZHAeEgAHanN0ERVnV1F8AiU0Ej5eU1t2OCs7FyJrAmdTByAUAgZ3CA8WZGtkcXAIEmBdLSd2hvISRl1dOmk/JjsQHBAGfWtsZxtRWRJXbywlMXJeF1pdPiwkZ34QAgQWcmsDAgRHUwBifgAZBDVraGhcKiQYKTFbclltH3wsDBpoRlFNCj00dwADUnViMmt6Z2AFEggWCRoVDBsQHBAGcGtsZwJTRFtRJj0zP3JXXlFbOix2MDwSQFdBamV0d2sQChBgJQcgZ34QAwIWcmsVYjdBRBJWISw4MZGGRBJSISc/Z34QAwMWcmsVKjxGWVxBLTN2Jj1fXVcUi+43Zy8=";
 
-    const grid = document.getElementById('grid');
-    const message = document.getElementById('message');
+    // 2. Clé de sécurité
+    const SECRET_KEY = "HIVER2024";
 
-    for (let i = 1; i <= 24; i++) {
-      const btn = document.createElement('button');
-      btn.className = 'day';
-      btn.textContent = i;
-      btn.onclick = () => {
-        const content = casesData[i] || "Rien de spécial ici...";
-        message.value = content;
-      };
-      grid.appendChild(btn);
+    // 3. Fonction de déchiffrement
+    function xorCipher(text, key) {
+        let result = "";
+        for (let i = 0; i < text.length; i++) {
+            result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+        }
+        return result;
     }
 
-    function checkCode() {
-      const input = document.getElementById('codeInput').value.trim().toUpperCase();
-      const correct = "FLOCON";
-      const result = document.getElementById('result');
+    let casesData = {};
+    try {
+        const decodedBase64 = atob(encryptedStore);
+        const decryptedString = xorCipher(decodedBase64, SECRET_KEY);
+        casesData = JSON.parse(decodeURIComponent(escape(decryptedString)));
+    } catch (e) {
+        console.error("Erreur lecture données");
+    }
 
-      if (input === correct) {
+    // Affichage
+    const grid = document.getElementById('grid');
+    const message = document.getElementById('message');
+    const daysOrder = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4];
+
+    daysOrder.forEach(day => {
+      const btn = document.createElement('button');
+      btn.className = 'day';
+      btn.textContent = day;
+      btn.onclick = () => {
+        message.value = casesData[day] || "Rien de spécial ici...";
+      };
+      grid.appendChild(btn);
+    });
+
+    // Validation Sécurisée
+    async function sha256(str) {
+        const buf = new TextEncoder().encode(str);
+        const hashBuf = await crypto.subtle.digest('SHA-256', buf);
+        return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkCode() {
+      const input = document.getElementById('codeInput').value.trim().toUpperCase();
+      const result = document.getElementById('result');
+      const correctHash = "d97001962d3a67d01ebf065e1867c295775c742c0774a3f595f22d561a0f960f";
+
+      if (await sha256(input) === correctHash) {
         result.textContent = "Bravo ! Fragment 3 débloqué : FRAGMENT_3";
+        result.style.color = "#4CAF50";
       } else {
         result.textContent = "Non. Pense à décoder les messages encodés.";
+        result.style.color = "#FF5252";
       }
     }
   </script>
