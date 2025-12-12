@@ -19,6 +19,7 @@
             position: relative;
         }
 
+
         /* 2. STYLE DES IMAGES (PLAT) */
         .deco {
             position: absolute;
@@ -29,6 +30,7 @@
             pointer-events: none; /* Rend l'image intouchable (pas de clic possible) */
         }
 
+
         /* 3. POSITIONS */
         .pos-sapin {
             top: 50%;
@@ -37,6 +39,7 @@
             transform: translateY(-50%); 
         }
 
+
         .pos-canape {
             top: 90%;
             right: 7%;
@@ -44,17 +47,20 @@
             transform: translateY(-50%);
         }
 
+
         .pos-lutin {
             bottom: 18%;
             left: 2%;
             width: 200px;
         }
 
+
         .pos-papa {
             bottom: 33%;
             right: 45%;
             width: 120px;
         }
+
 
         .pos-rennes {
             top: 2%;
@@ -66,9 +72,28 @@
             left: 29%;
             width: 150px;
         }
+
+        /* INDICE CACHÉ */
+        #hint {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 16px;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border: 2px solid #00ff00;
+            max-width: 300px;
+        }
+        #hint.visible {
+            display: block;
+        }
     </style>
 </head>
 <body>
+
 
     
     <img src="canapenoel.png" alt="Canapé" class="deco pos-canape">
@@ -78,5 +103,33 @@
     <img src="rennesnoel.png" alt="Rennes" class="deco pos-rennes">
     <img src="cadeaunoel.png" alt="Rennes" class="deco pos-cadeau">
 
-</body>
-</html>
+    <div id="hint"></div>
+
+    <script>
+    let timeLeft = 35 * 60; // 35 minutes
+    let hintRevealed = false;
+    
+    // Indice caché en base64
+    const encodedHint = "VW4gaW5kaWNlIHBvdXIgdG9p";
+    
+    // Vérifie si l'indice a déjà été révélé
+    if (localStorage.getItem("hintShown") === "true") {
+        hintRevealed = true;
+        const hintElement = document.getElementById("hint");
+        hintElement.textContent = atob(encodedHint);
+        hintElement.classList.add("visible");
+    }
+    
+    setInterval(() => {
+        timeLeft--;
+        
+        // Afficher l'indice après 35 minutes
+        if (timeLeft <= 0 && !hintRevealed) {
+            hintRevealed = true;
+            localStorage.setItem("hintShown", "true");
+            const hintElement = document.getElementById("hint");
+            hintElement.textContent = atob(encodedHint);
+            hintElement.classList.add("visible");
+        }
+    }, 1000);
+</script>

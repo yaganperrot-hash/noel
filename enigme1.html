@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="system-config" content="part_1: OJdYazz"> 
+  <meta name="system-config" content="part_1: OJY"> 
   <title>Énigme 1 – Le Sapin Mystérieux</title>
   <style>
     body {
@@ -49,19 +49,21 @@
 
 
     async function sha256(message) {
-        const msgBuffer = new TextEncoder().encode(message);
+        const clnMessage = message.replace(/\s/g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const msgBuffer = new TextEncoder().encode(clnMessage);
+
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     async function verif() {
-        const input = document.getElementById('codeInput').value.trim().toUpperCase();
+        const input = document.getElementById('codeInput').value.trim();
         const msg = document.getElementById('msg');
         
        
-        const target = "970694501b0237752fe73ecbf7480e8e2e8a574de1103e358d73306c3f9d07d9";
-        
+        const target = "8467f3505e99d65b0624dc3efa13db03600209257c7c4daee439cb116bd4c059";
+
         const hash = await sha256(input);
 
         if (hash === target) {
