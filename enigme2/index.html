@@ -7,129 +7,111 @@
     <style>
         /* 1. FOND D'ÉCRAN */
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
+            margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
             background-image: url('fondecran.png'); 
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
+            background-size: cover; background-position: center center; background-repeat: no-repeat;
             position: relative;
         }
 
-
         /* 2. STYLE DES IMAGES (PLAT) */
         .deco {
-            position: absolute;
-            height: auto;
-            border: none;
-            outline: none;
-            display: block;
-            pointer-events: none; /* Rend l'image intouchable (pas de clic possible) */
+            position: absolute; height: auto; border: none; outline: none; display: block;
+            pointer-events: none; /* Empêche le clic */
         }
-
 
         /* 3. POSITIONS */
-        .pos-sapin {
-            top: 50%;
-            left: 23%;
-            width: 250px;
-            transform: translateY(-50%); 
-        }
+        .pos-sapin { top: 50%; left: 23%; width: 250px; transform: translateY(-50%); }
+        .pos-canape { top: 90%; right: 7%; width: 500px; transform: translateY(-50%); }
+        .pos-lutin { bottom: 18%; left: 2%; width: 200px; }
+        .pos-papa { bottom: 33%; right: 45%; width: 120px; }
+        .pos-rennes { top: 2%; right: 12%; width: 287px; }
+        .pos-cadeau { bottom: 23%; left: 29%; width: 150px; }
 
-
-        .pos-canape {
-            top: 90%;
-            right: 7%;
-            width: 500px;
-            transform: translateY(-50%);
-        }
-
-
-        .pos-lutin {
-            bottom: 18%;
-            left: 2%;
-            width: 200px;
-        }
-
-
-        .pos-papa {
-            bottom: 33%;
-            right: 45%;
-            width: 120px;
-        }
-
-
-        .pos-rennes {
-            top: 2%;
-            right: 12%;
-            width: 287px;
-        }
-        .pos-cadeau {
-            bottom: 23%;
-            left: 29%;
-            width: 150px;
-        }
-
-        /* INDICE CACHÉ */
+        /* 4. INDICE VISIBLE AVEC COMPTEUR */
         #hint {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 16px;
-            color: #00ff00;
+            bottom: 20px; /* En bas */
+            left: 20px;   /* A gauche */
+            font-size: 18px;
+            color: #00ff00; /* Vert hacker */
             font-family: "Courier New", monospace;
-            display: none;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             padding: 15px;
             border: 2px solid #00ff00;
-            max-width: 300px;
-        }
-        #hint.visible {
-            display: block;
+            min-width: 200px;
+            text-align: center;
+            display: block; /* Toujours visible */
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
 
-
-    
     <img src="canapenoel.png" alt="Canapé" class="deco pos-canape">
     <img src="lutinnoel.png" alt="Lutin" class="deco pos-lutin">
     <img src="papanoel.png" alt="Papa Noël" class="deco pos-papa">
     <img src="sapinmodifnoel.png" alt="Sapin" class="deco pos-sapin">
     <img src="rennesnoel.png" alt="Rennes" class="deco pos-rennes">
-    <img src="cadeaunoel.png" alt="Rennes" class="deco pos-cadeau">
+    <img src="cadeaunoel.png" alt="Cadeau" class="deco pos-cadeau">
 
-    <div id="hint"></div>
+    <div id="hint">Chargement...</div>
 
-    <script>
-    let timeLeft = 35 * 60; // 35 minutes
-    let hintRevealed = false;
-    
-    // Indice caché en base64
-    const encodedHint = "VW4gaW5kaWNlIHBvdXIgdG9p";
-    
-    // Vérifie si l'indice a déjà été révélé
-    if (localStorage.getItem("hintShown") === "true") {
-        hintRevealed = true;
-        const hintElement = document.getElementById("hint");
-        hintElement.textContent = atob(encodedHint);
-        hintElement.classList.add("visible");
-    }
-    
-    setInterval(() => {
-        timeLeft--;
+ <script>
+        // --- CONFIGURATION ---
+        const DUREE_MINUTES = 35; 
         
-        // Afficher l'indice après 35 minutes
-        if (timeLeft <= 0 && !hintRevealed) {
-            hintRevealed = true;
-            localStorage.setItem("hintShown", "true");
-            const hintElement = document.getElementById("hint");
-            hintElement.textContent = atob(encodedHint);
-            hintElement.classList.add("visible");
+        const MESSAGE_CHIFFRE = "1e20303e6e392a393d6f20226e3c2a3e3a26376c2723652a2f3a213e2f6f303827232c3f2b3d653e2b39202d226f6825";
+        const CLE_DECHIFFREMENT = "NOEL";
+        const storageKey = "fin_compte_a_rebours_v4"; 
+        // ---------------------
+
+        // CETTE LIGNE MANQUAIT :
+        const hintBox = document.getElementById("hint");
+
+        // Fonction de décryptage (XOR)
+        function decrypter(hex, key) {
+            let result = "";
+            for (let i = 0; i < hex.length; i += 2) {
+                let code = parseInt(hex.substr(i, 2), 16);
+                let keyChar = key.charCodeAt((i / 2) % key.length);
+                result += String.fromCharCode(code ^ keyChar);
+            }
+            return result;
         }
-    }, 1000);
-</script>
+
+        function demarrerCompteur() {
+            let dateFin = localStorage.getItem(storageKey);
+
+            if (!dateFin) {
+                const now = new Date().getTime();
+                dateFin = now + (DUREE_MINUTES * 60 * 1000);
+                localStorage.setItem(storageKey, dateFin);
+            }
+
+            const interval = setInterval(() => {
+                const maintenant = new Date().getTime();
+                const distance = dateFin - maintenant;
+
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (distance > 0) {
+                    hintBox.innerHTML = `INDICE DANS<br>${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+                } else {
+                    clearInterval(interval);
+                    revelerIndice();
+                }
+            }, 1000);
+        }
+
+        function revelerIndice() {
+            hintBox.style.borderColor = "red";
+            hintBox.style.color = "red";
+            const messageClair = decrypter(MESSAGE_CHIFFRE, CLE_DECHIFFREMENT);
+            hintBox.innerHTML = "<strong>" + messageClair + "</strong>";
+        }
+
+        demarrerCompteur();
+    </script>
+</body>
+</html>
