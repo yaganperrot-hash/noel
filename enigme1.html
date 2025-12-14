@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="system-config" content="part_1: syOazeJsxdYazz"> 
+  <meta name="system-config" content="part_1: OJY"> 
   <title>Énigme 1 – Le Sapin Mystérieux</title>
   <style>
     body {
@@ -32,7 +32,7 @@
   <script>
 
     if(!localStorage.getItem('sys_part_2')) {
-        localStorage.setItem('sys_2', 'moi toi soi lui elle elles'); 
+        localStorage.setItem('sys_2', 'moi toi soi lui elle nous vous ... elles'); 
     }
 
 
@@ -42,26 +42,28 @@
 
         memory_dump: {
             stack: "empty",
-            part :"le mot de passe c'est du classique pour la saison" //
+            part_3 :"le mot de passe c'est du classique pour la saison" //
         }
     };
     console.log("Système initialisé. Tapez 'DebugSystem' pour voir l'état de la mémoire.");
 
 
     async function sha256(message) {
-        const msgBuffer = new TextEncoder().encode(message);
+        const clnMessage = message.replace(/\s/g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const msgBuffer = new TextEncoder().encode(clnMessage);
+
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     async function verif() {
-        const input = document.getElementById('codeInput').value.trim().toUpperCase();
+        const input = document.getElementById('codeInput').value.trim();
         const msg = document.getElementById('msg');
         
        
-        const target = "4d67364b097561f63056029d20c7490288f344e78a63588df88f161879008902";
-        
+        const target = "8467f3505e99d65b0624dc3efa13db03600209257c7c4daee439cb116bd4c059";
+
         const hash = await sha256(input);
 
         if (hash === target) {
@@ -80,14 +82,17 @@
         zone.innerHTML = `
             <h3 style="color:green">Victoire !</h3>
             <p>Saisis ton email :</p>
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <form action="https://docs.google.com/forms/d/e/1FAIpQLScLkeozfaHugoF57Y5C3bo_vjTFB_YnI6MdBb2bd-ffulfAdg/formResponse" 
-                  method="post" target="hidden_iframe" onsubmit="finalShow()">
-                <input type="text" name="entry.1719582037" placeholder="email@ecole.com" required style="width:80%">
-                <input type="hidden" name="entry.1505677994" value="${code}">
+            
+            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfNmqzG8HPFtq9Mdgdy0bdKBIxIilvrazT-FpkqGA4dueD_tA/formResponse" 
+                  method="post" target="_blank" onsubmit="finalShow()">
+                
+                <input type="text" name="entry.253743354" placeholder="email@ecole.com" required style="width:80%">
+                <input type="hidden" name="entry.312344562" value="${code}">
+                
                 <br><br>
                 <button type="submit" style="background:#2e7d32; width:100%">Envoyer</button>
             </form>
+            
             <div id="final" style="display:none; margin-top:15px; border: 2px dashed #333; padding:10px;">
                 Fragment 1 : <strong>FRAGMENT_1</strong>
             </div>
