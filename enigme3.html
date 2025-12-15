@@ -33,6 +33,7 @@
   </div>
 
   <script>
+    const TARGET_HASH = "3630325439402562412852655554696c73792f3928233527262024227c2f627d";
     const encryptedStore = `M2tnZ2gQcl1aJix2JDxc85tRamV0d3AIEgIFeXlmdWMCEAIFeHlmdGMDEAIFeHhmdGIDEAIFeXlmdGMDEAIFeXlmdGICEAIFeHlndWICEAIFeHlndWMCEAIFeXhmdGMCEAIFeXlmdWIDEAIFeHhndWICEAIFeHlndGMCEAIFeXhmdWICEAIEeHhmdGMCEAIFeHlmdGMDEAIEeHhmdWIDEAIFeXlndGICEAIFeHlndWIDEAIFeHlmdGICEAIFeXlndGMDEAIFeXlmdGMDEAIFeXlmdWMCEAIFeXlndWIDEAIFeXlmdGICEAIFeXlndGICEAIFeXlmdGIDEAIFeHlmdGMDEAIFeXlmdGICEAIFeHhndWMCEAIFeXlmdGICEAIFeHlmdGMDEAIFeHhmdGIDEAIFeXlmdGMDEAIFeXlmdWMDEAIFeHlmdGMDEAIFeHlmdGMCEAIFeXhndWMCEh4We2tsZxEVVUFAaCs/IDxG84ZAaCU3ZSBXQEBdOyx0aXAGEggWZmd4Z34QAgIWcmsUKjxcVUEUPig1JDxRVUEUaWt6Z2ADEggWGCw4NjdIEPGUaC83LCBXEERbO2k7KjZHXFdHamV0d2AQChAEeXlndWMCARIEeXhmdGMCARIEeXlndWMDABIEeXhmdGMDABIEeXlndGICARIEeXlndGICABIEeXlmdGIDABIEeXhmdGIDARIEeXlndGIDABIEeXlndGICABIEeXhmdGMDARIEeXhmdWMDARIEeXlndGICARIEeXhmdGMCARIEeXhmdGMCABIEeXhmdGMCABIEeXhmdWIDABIEeXhmdGICARIEeXlmdWIDABIEeXhndWIDARIEeXlndGIDABIEeXlndWIDARIEeXlmdWIDABIEeXhndWIDARIEeXhmdWICARIEeXlndGICABIEeXlndGIDABIEeXhmdGMCABIEeXlmdGICARIEeXlmdGICABIEeXlmdWIDABIEeXhndGICARIEeHhndWMDABIEeXlndWIDARIEeHhndWICARIEeXhndGIDABIEeHhndWMDABIEeXlndWMDARIEeHhndWICARIEeXhndWICABIEeXhmdWIDABIEeXhmdGMCARIEeXlmdWMDABIEeXhndWICABIEeXhmdWIDARIEeXhmdGMCARIEeXlndWMCARIEeXhmdWMDARAYantlZ2gQdlNdPCwlZTBbVVwUPiYlZTFdXV9dPDp0aXAABBAOanlndWMCAQIFaHlndWICAQMFaHlndWMCAQMEaHlndGMCAQIFaHlndGICAAMFaHlmdGMCAAMEaHlndWMCAQMEaHlmdGMCAQMEaHlndWIDAAIFaHlndWIDAQMEaHlndWICAAIFaHlndGICAQMFaHlndWMDAAIFaHlndWMDAAIEaHlndWMDAAMEaHlndGIDAAIEaHlndGICAAMEaHlndGIDAQIFaHlndWIDAQMEaHlndGIDAQIEaHlndGICAAMFaHlndGIDAAIFaHlndWICAAMEaHlndGIDAAMFaHlndWMDAAIFaHlndWMCAQMFaHlmdGMCAQIFaHlndGMDAAMEaHlndWIDAAIFaHlndWIDAAIEaHlndWMDAAMEaHlndGMCAQMEaHlndGICAAMFaHlndGMDAAIFaHlndWICAAMEaHlndGMCAQIEaHlndGICAAMEaHlmdGMCAAMEaHlndWMCAAMEaHlmdGMCAAIFaHlndGICAAMEaHlndWICAQMFaHlndWMCAQMEaHlndGMDAAMEamV0d2cQChBmZgh4FnJbU1sWZGtkc3AIEmRbPTp2JCRXShJSOiY/IXINEH9bIWk3MCFBWRAYanthZ2gQAAMFeHlndWISAAMFeHhndGMSAAMFeXlndWMSAAMFeHlmdGISAAMFeHhndWISAAMFeHlndWMSAAIFeHlmdWISAAMFeHlmdGMSAAMFeHhndGMSAAMFeXlndWISAAMFeHlmdWMSAAMFeHlndGMSAAMFeHlmdWMQHBAGcGtsZx1cEFFbJj0/KydXERAYantvZ2gQAAMEeXlndWISAAMEeHlndGMSAAMEeXlndWMSAAMFeXlndGMSAAMFeHlmdGMSAAMEeHhmdWISAAMEeHhmdGISAAMFeHhndWISAAMFeHlmdGISAAMEeXlndGMSAAMFeHhndWISAAMFeHhndWISAAMFeHlmdGMSAAMFeHhmdWMSAAMEeHhmdGISAAMFeXlmdWISAAMFeHlmdGISAAMFeHhndWMSAAMEeXlmdGISAAMFeXlmdWISAAMEeHhmdWMSAAIFeXlmdGISAAMEeXlndWMSAAMFeHhndGMSAAMEeHhndGMSAAMFeHhndWMSAAMEeHhmdGISAAMEeHhndGMSAAMEeXlndWISAAMEeHhndWMSAAIFeXhmdWISAAIFeXhndWMQHBAHeGtsZ2IDAAMEeXlmZWIDAAIEeXhnZWIDAAMEeXlnZWIDAQIEeXhnZWIDAAMFeHhmZWIDAAIEeXhnZWIDAAMEeXhmZWICAQMEeHlnZWIDAQIEeXlnZWIDAAIEeXhnZWIDAQIFeXhmZWIDAQIFeXhnZWIDAQIEeHhmZWIDAAMEeXhnZWIDAAMEeXlnZWIDAQIEeXhnZWIDAAIFeXhnZWIDAQIFeHlnZWIDAAIEeHhmZWIDAAIEeXlmZWIDAQIEeHhmZWIDAQIFeHhnZWICAQMFeHlmZ34QAwMWcmsUKjxYX0dGajQ=`; 
     
     const SECRET_KEY = "HIVER2024";
@@ -43,6 +44,12 @@
             result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
         }
         return result;
+    }
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     let casesData = {};
@@ -74,11 +81,15 @@
       grid.appendChild(btn);
     });
 
-    function checkCode() {
+   async function checkCode() {
       const input = document.getElementById('codeInput').value.trim().toUpperCase();
       const result = document.getElementById('result');
 
-      if (input === "FLOCON") {
+      // On hache l'entrée de l'utilisateur
+      const inputHash = await sha256(input);
+
+      // On compare les hashs
+      if (inputHash === TARGET_HASH) {
         result.innerHTML = "🎁 Bravo ! Fragment 3 débloqué : <br><span style='font-size:1.5em'>FRAGMENT_3</span>";
         result.style.color = "#27ae60"; 
       } else {
