@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joyeux Noël</title>
+    <title>Joyeux Noël - Énigme</title>
     <style>
         body {
             margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
             background-image: url('fondecran.png'); 
             background-size: cover; background-position: center center; background-repeat: no-repeat;
             position: relative;
+            font-family: sans-serif;
         }
 
         .deco {
-            position: absolute; height: auto; border: none; outline: none; display: block;
+            position: absolute; height: auto; display: block;
             pointer-events: none; 
         }
 
@@ -22,88 +23,132 @@
         .pos-lutin { bottom: 18%; left: 2%; width: 200px; }
         .pos-papa { bottom: 33%; right: 45%; width: 120px; }
         .pos-rennes { top: 2%; right: 12%; width: 287px; }
-        .pos-cadeau { bottom: 23%; left: 29%; width: 150px; }
+        .pos-cadeau { bottom: 23%; left: 29%; width: 150px; z-index: 500; }
 
         #hint {
-            position: fixed;
-            bottom: 20px; 
-            left: 20px;   
-            font-size: 18px;
-            color: #00ff00; 
-            font-family: "Courier New", monospace;
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 15px;
-            border: 2px solid #00ff00;
-            min-width: 200px;
-            text-align: center;
-            display: block; 
-            z-index: 1000;
+            position: fixed; bottom: 20px; left: 20px; font-size: 18px; color: #00ff00; 
+            font-family: "Courier New", monospace; background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px; border: 2px solid #00ff00; min-width: 200px; text-align: center;
+            display: none; z-index: 1000;
         }
+
+        .validation-box {
+             position: absolute;
+             bottom: 16%; right: 42%; width: 120px; transform: translate(-50%, -50%);
+             text-align: center; z-index: 2000;
+        }
+        .validation-box input { padding: 10px; width: 150px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; text-align: center;}
+        .validation-box button { padding: 10px 20px; margin-left: 30px;background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        .validation-box button:hover { background: #b71c1c; }
     </style>
 </head>
 <body>
 
+    <div class="validation-box">
+        <div id="interface">
+            <input type="text" id="codeInput" placeholder="MOT SECRET">
+            <br>
+            <button onclick="verif()">Valider</button>
+            <div id="msg"></div>
+        </div> 
+    </div>
+
     <img src="canapenoel.png" alt="Canapé" class="deco pos-canape">
     <img src="lutinnoel.png" alt="Lutin" class="deco pos-lutin">
     <img src="papanoel.png" alt="Papa Noël" class="deco pos-papa">
-    <img src="sapinmodifnoel.png" alt="Sapin" class="deco pos-sapin">
+    <img src="sapin2q4n1k89.png" alt="Sapin" class="deco pos-sapin">
     <img src="rennesnoel.png" alt="Rennes" class="deco pos-rennes">
-    <img src="cadeaunoel.png" alt="Cadeau" class="deco pos-cadeau">
-
-    <div id="hint">Chargement...</div>
+    <img src="cadeaunoel.png" alt="Cadeau" class="deco pos-cadeau" id="imgCadeau">
+    
+    <div id="hint"> On a cassé une partie du script ...</div>
 
  <script>
-        const DUREE_MINUTES = 35; 
-        
-        const MESSAGE_CHIFFRE = "1e20303e6e392a393d6f20226e3c2a3e3a26376c2723652a2f3a213e2f6f303827232c3f2b3d653f3a2a222d20201e20303e6e392a393d6f20226e3c2a3e3a26376c2723652a2f3a213e2f6f303827232c3f2b3d653e2b39202d226f6825";
-        const CLE_DECHIFFREMENT = "NOEL";
-        const storageKey = "fin_compte_a_rebours_v4"; 
-
+        const DUREE_MINUTES = 100000000000000; 
+        const MESSAGE_CHIFFRE = "command hide-i reveal-i";
+        const CLE_DECHIFFREMENT = "pas besoin de chiffrement pour cette énigme";
+        const storageKey = "fin_compte_a_rebours_v5"; 
         const hintBox = document.getElementById("hint");
 
-        function decrypter(hex, key) {
-            let result = "";
-            for (let i = 0; i < hex.length; i += 2) {
-                let code = parseInt(hex.substr(i, 2), 16);
-                let keyChar = key.charCodeAt((i / 2) % key.length);
-                result += String.fromCharCode(code ^ keyChar);
-            }
-            return result;
-        }
-
         function demarrerCompteur() {
-            let dateFin = localStorage.getItem(storageKey);
-
-            if (!dateFin) {
-                const now = new Date().getTime();
-                dateFin = now + (DUREE_MINUTES * 60 * 1000);
-                localStorage.setItem(storageKey, dateFin);
-            }
-
-            const interval = setInterval(() => {
-                const maintenant = new Date().getTime();
-                const distance = dateFin - maintenant;
-
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                if (distance > 0) {
-                    hintBox.innerHTML = `INDICE DANS<br>${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
-                } else {
-                    clearInterval(interval);
-                    revelerIndice();
-                }
-            }, 1000);
+            revelerIndice(); 
         }
 
         function revelerIndice() {
+            hintBox.style.display = "none";
             hintBox.style.borderColor = "red";
             hintBox.style.color = "red";
-            const messageClair = decrypter(MESSAGE_CHIFFRE, CLE_DECHIFFREMENT);
-            hintBox.innerHTML = "<strong>" + messageClair + "</strong>";
+            hintBox.innerHTML = "<strong>" + MESSAGE_CHIFFRE + "</strong>";
         }
-
         demarrerCompteur();
+
+        const urlScript = "https://script.google.com/macros/s/AKfycbwxHtD90L5HjLUgsEgQQLkQO5TS4qAa2wzSJ9AcYwpEJXUdzVWS2SE5aEGkPP3qajYbZw/exec";
+
+        async function verif() {
+            const inputRaw = document.getElementById('codeInput').value;
+            const input = inputRaw.trim().replace(/\s/g, '').toUpperCase();
+            const msg = document.getElementById('msg');
+            
+            if (!input) {
+                msg.innerText = "⚠️ Entrez un mot.";
+                msg.style.color = "orange";
+                return;
+            }
+            
+            const email = window.prompt("Pour enregistrer votre tentative, entrez votre email de l'etna :");
+            const finalEmail = (email && email.includes('@')) ? email : "Anonyme";
+
+            msg.style.color = "#d32f2f";
+            msg.innerText = "Vérification...";
+
+            const finalUrl = `${urlScript}?id=enigme2&code=${encodeURIComponent(input)}&email=${encodeURIComponent(finalEmail)}&token=Noel2024Secure`;
+
+            try {
+                const response = await fetch(finalUrl);
+                const data = await response.json(); 
+
+                if (data.success) {
+                    document.querySelector('.validation-box').style.display = 'none';
+                    let fragmentContent = "";
+                                        if (data.type === "image" || (typeof data.fragment === 'string' && data.fragment.startsWith("http"))) {
+                        fragmentContent = `<img src="${data.fragment}" alt="Indice" style="max-width:100%; border-radius:8px; box-shadow:0 0 15px rgba(0,0,0,0.3);">`;
+                    } else {
+                        fragmentContent = `<strong style="font-size:1.4em; color:#d32f2f;">${data.fragment}</strong>`;
+                    }
+
+                    const newHtml = `
+                       <div style="
+                            position: fixed; 
+                            top: 50%; 
+                            left: 50%; 
+                            transform: translate(-50%, -50%); 
+                            width: 300px; 
+                            padding: 20px; 
+                            border: 3px solid #1e5f36; 
+                            background: #f0fdf4; 
+                            border-radius: 12px; 
+                            text-align: center; 
+                            z-index: 5000; 
+                            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+                        ">
+                            <h3 style="color:#1e5f36; margin-top:0; margin-bottom:15px;">Fragment débloqué !</h3>
+                            ${fragmentContent}
+                        </div>
+                    `;
+                    const elementCadeau = document.getElementById('imgCadeau');
+                    if (elementCadeau) {
+                        elementCadeau.outerHTML = newHtml;
+                    }
+
+                } else {
+                    msg.style.color = "#d32f2f";
+                    msg.innerText = "❌ " + data.message;
+                }
+            } catch (error) {
+                console.error(error);
+                msg.style.color = "#d32f2f";
+                msg.innerText = "❌ Erreur connexion.";
+            }
+        }
     </script>
 </body>
 </html>
